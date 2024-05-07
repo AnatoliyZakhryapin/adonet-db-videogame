@@ -27,7 +27,10 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
                 using SqlCommand cmd = new SqlCommand(query, connessioneSql);
                 InsertInternal(cmd, newVideoGame);
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static int InsertInternal(SqlCommand cmd, VideoGame newVideoGame)
@@ -79,10 +82,6 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
                 long softwareHouseID = reader.GetInt64(indiceSoftwareHouseID);
 
                 videoGame = new VideoGame(idVideogame, name, overview, releaseDate, createdAt, updatedAt, softwareHouseID);
-
-                Console.WriteLine();
-                Console.WriteLine(videoGame.ToString());
-                Console.WriteLine();
             }
             catch (Exception ex) 
             {
@@ -159,6 +158,7 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
                     Console.WriteLine();
                     Console.WriteLine($"Eliminato con successo!");
                     Console.WriteLine($"Dati del VideoGame eliminato: ");
+                    Console.WriteLine();
                     Console.WriteLine(videoGame.ToString());
                 }
             }
