@@ -139,5 +139,34 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
             }
             return videoGames;
         }
+
+        internal static void DeleteVideoGame(VideoGame videoGame)
+        {
+            using SqlConnection connessioneSql = new SqlConnection(STRINGA_DI_CONNESSIONE);
+
+            try
+            {
+                connessioneSql.Open();
+                string query = @"DELETE FROM videogames WHERE id = @id";
+
+                using SqlCommand cmd = new SqlCommand(query, connessioneSql);
+                cmd.Parameters.AddWithValue("@id", videoGame.Id);
+
+                int affectedRows = cmd.ExecuteNonQuery();
+
+                if(affectedRows > 0)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Eliminato con successo!");
+                    Console.WriteLine($"Dati del VideoGame eliminato: ");
+                    Console.WriteLine(videoGame.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
