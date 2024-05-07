@@ -171,7 +171,7 @@ namespace adonet_db_videogame
 
                     idToSerach = id;
 
-                    VideoGame videoGameFinded = VideoGameManager.GetVideogameById(idToSerach);
+                    VideoGame videoGameFinded = VideoGameManager.GetVideoGameById(idToSerach);
 
                     break;
                 }
@@ -181,13 +181,49 @@ namespace adonet_db_videogame
                     Console.WriteLine($"Errore: {ex.Message}");
                 }
             }
-
-
         }
 
         static void SearchGameByName()
         {
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine();
+                    Console.Write("Inserisci il nome di VideoGame da cercare: ");
+                    string inputNameToSerach = Console.ReadLine();
 
+                    if (string.IsNullOrWhiteSpace(inputNameToSerach))
+                        throw new Exception("Il nome non puo essere vuoto. Riprova");
+
+                    List<VideoGame> listVideoGames = VideoGameManager.GetVideoGamesByName(inputNameToSerach);
+
+                    Console.WriteLine();
+                    Console.WriteLine("Risultati della ricerca: ");
+                    Console.WriteLine();
+
+                    if(listVideoGames.Count > 0)
+                    {
+                        foreach (VideoGame videoGame in listVideoGames)
+                        {
+                            Console.WriteLine(videoGame.ToString());
+                            Console.WriteLine();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Non ci sono i resultati per nome: {inputNameToSerach}");
+                        Console.WriteLine();
+                    }
+                    
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Errore: {ex.Message}");
+                }
+            }
         }
 
         static void DeleteGame()
