@@ -149,13 +149,39 @@ namespace adonet_db_videogame
                 }
             }
 
-            VideoGame newVideoGame = new VideoGame(name, overview, releaseDate, DateTime.Now, softwareHouseID);
+            VideoGame newVideoGame = new VideoGame(name, overview, releaseDate,  DateTime.Now, softwareHouseID );
 
             VideoGameManager.AddNewGame(newVideoGame);
         }
 
         static void SearchGameById ()
         {
+            long idToSerach;
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine();
+                    Console.Write("Inserisci id di VideoGame da cercare: ");
+                    string inputIdToSerach = Console.ReadLine();
+
+                    if (!long.TryParse(inputIdToSerach, out long id))
+                        throw new Exception("Formato Id non valido. Riprova.");
+
+                    idToSerach = id;
+
+                    VideoGame videoGameFinded = VideoGameManager.GetVideogameById(idToSerach);
+
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Errore: {ex.Message}");
+                }
+            }
+
 
         }
 
