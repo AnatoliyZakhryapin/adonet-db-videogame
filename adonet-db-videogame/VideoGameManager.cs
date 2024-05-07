@@ -43,7 +43,7 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
             return affectedRows;
         }
 
-        internal static VideoGame GetVideogameById(long id)
+        internal static VideoGame GetVideoGameById(long id)
         {
             VideoGame videoGame = null;
 
@@ -91,6 +91,53 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
             }
 
             return videoGame;
+        }
+
+        internal static List<VideoGame> GetVideoGamesByName(string nameToSearch)
+        {
+            List<VideoGame> videoGames = new List<VideoGame>();
+
+            using SqlConnection connessioneSql = new SqlConnection(STRINGA_DI_CONNESSIONE);
+
+            try
+            {
+                connessioneSql.Open();
+                string query = @"SELECT * FROM videogames WHERE name LIKE '%' + @name + '%'";
+
+                using SqlCommand cmd = new SqlCommand(query, connessioneSql);
+                cmd.Parameters.AddWithValue("@name", nameToSearch);
+
+                using SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int indiceID = reader.GetOrdinal("id");
+                    int indiceName = reader.GetOrdinal("name");
+                    int indiceOverview = reader.GetOrdinal("overview");
+                    int indiceReleaseDate = reader.GetOrdinal("release_date");
+                    int indiceCreatedAt = reader.GetOrdinal("created_at");
+                    int indiceUpdatedAt = reader.GetOrdinal("updated_at");
+                    int indiceSoftwareHouseID = reader.GetOrdinal("software_house_id");
+
+                    long idVideogame = reader.GetInt64(indiceID);
+                    string name = reader.GetString(indiceName);
+                    string overview = reader.GetString(indiceOverview);
+                    DateTime releaseDate = reader.GetDateTime(indiceReleaseDate);
+                    DateTime createdAt = reader.GetDateTime(indiceCreatedAt);
+                    DateTime updatedAt = reader.GetDateTime(indiceUpdatedAt);
+                    long softwareHouseID = reader.GetInt64(indiceSoftwareHouseID);
+
+                    VideoGame videoGame = new VideoGame(idVideogame, name, overview, releaseDate, createdAt, updatedAt, softwareHouseID);
+               
+                    videoGames.Add(videoGame);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+            return videoGames;
         }
     }
 }
