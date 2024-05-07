@@ -35,12 +35,60 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
             cmd.Parameters.Add(new SqlParameter("@name", newVideoGame.Name));
             cmd.Parameters.Add(new SqlParameter("@overview", newVideoGame.Overview));
             cmd.Parameters.Add(new SqlParameter("@release_date", newVideoGame.ReleaseDate));
-            cmd.Parameters.Add(new SqlParameter("@created_at", newVideoGame.CreateAt));
-            cmd.Parameters.Add(new SqlParameter("@updated_at", newVideoGame.UpdateAt));
+            cmd.Parameters.Add(new SqlParameter("@created_at", newVideoGame.CreatedAt));
+            cmd.Parameters.Add(new SqlParameter("@updated_at", newVideoGame.UpdatedAt));
             cmd.Parameters.Add(new SqlParameter("@sh_id", newVideoGame.SoftwareHouseID));
 
             int affectedRows = cmd.ExecuteNonQuery();
             return affectedRows;
+        }
+
+        internal static VideoGame GetVideogameById(long id)
+        {
+            VideoGame videoGame = null;
+
+            using SqlConnection connessioneSql = new SqlConnection(STRINGA_DI_CONNESSIONE);
+
+            try
+            {
+                connessioneSql.Open();
+                string query = @"SELECT * FROM videogames WHERE id = @id";
+
+                using SqlCommand cmd = new SqlCommand(query, connessioneSql);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using SqlDataReader reader = cmd.ExecuteReader();
+
+                if (!reader.Read())
+                    throw new Exception($"VideoGame con id - {id} non e stata trovata.");
+
+                int indiceID = reader.GetOrdinal("id");
+                int indiceName = reader.GetOrdinal("name");
+                int indiceOverview = reader.GetOrdinal("overview");
+                int indiceReleaseDate = reader.GetOrdinal("release_date");
+                int indiceCreatedAt = reader.GetOrdinal("created_at");
+                int indiceUpdatedAt = reader.GetOrdinal("updated_at");
+                int indiceSoftwareHouseID = reader.GetOrdinal("software_house_id");
+
+                long idVideogame = reader.GetInt64(indiceID);
+                string name = reader.GetString(indiceName);
+                string overview = reader.GetString(indiceOverview);
+                DateTime releaseDate = reader.GetDateTime(indiceReleaseDate);
+                DateTime createdAt = reader.GetDateTime(indiceCreatedAt);
+                DateTime updatedAt = reader.GetDateTime(indiceUpdatedAt);
+                long softwareHouseID = reader.GetInt64(indiceSoftwareHouseID);
+
+                videoGame = new VideoGame(name, overview, releaseDate, createdAt, softwareHouseID);
+                videoGame.Id = idVideogame;
+                videoGame.UpdatedAt = updatedAt;
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
+            return videoGame;
         }
     }
 }
