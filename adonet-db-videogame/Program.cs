@@ -229,6 +229,33 @@ namespace adonet_db_videogame
         static void DeleteGame()
         {
 
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine();
+                    Console.Write("Inserisci id di VideoGame da cancelare: ");
+                    string inputIdToSerach = Console.ReadLine();
+
+                    if (!long.TryParse(inputIdToSerach, out long id))
+                        throw new Exception("Formato Id non valido. Riprova.");
+
+                    VideoGame videoGameFinded = VideoGameManager.GetVideoGameById(id);
+
+                    if (videoGameFinded != null)
+                    {
+                        VideoGameManager.DeleteVideoGame(videoGameFinded);
+                        Console.WriteLine();
+                    }
+                    Console.WriteLine();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Errore: {ex.Message}");
+                }
+            }
         }
 
     }
