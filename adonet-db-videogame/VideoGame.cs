@@ -17,12 +17,13 @@ namespace adonet_db_videogame
         public DateTime UpdatedAt { get; private set;}
         public long SoftwareHouseID { get; private set; }
 
-        public VideoGame (string name, string overview, DateTime releaseDate, DateTime createAt, long softwareHouseID)
+        public VideoGame (string name, string overview, DateTime releaseDate, DateTime createdAt, long softwareHouseID)
         {
             Name = name;
             Overview = overview;
             ReleaseDate = releaseDate;
-            CreatedAt = createAt;
+            CreatedAt = createdAt;
+            UpdatedAt = createdAt;
             SoftwareHouseID = softwareHouseID;
         }
 

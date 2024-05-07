@@ -118,7 +118,6 @@ namespace adonet_db_videogame
                     if (!DateTime.TryParse(inputReleaseDate, out releaseDate))
                         throw new Exception("Formato data non valido. Riprova.");
 
-                    releaseDate = releaseDate;
                     break;
                 }
                 catch (Exception ex)
@@ -149,7 +148,7 @@ namespace adonet_db_videogame
                 }
             }
 
-            VideoGame newVideoGame = new VideoGame(name, overview, releaseDate,  DateTime.Now, softwareHouseID );
+            VideoGame newVideoGame = new VideoGame(name, overview, releaseDate, DateTime.Now, softwareHouseID );
 
             VideoGameManager.AddNewGame(newVideoGame);
         }
@@ -173,6 +172,12 @@ namespace adonet_db_videogame
 
                     VideoGame videoGameFinded = VideoGameManager.GetVideoGameById(idToSerach);
 
+                    if(videoGameFinded != null)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(videoGameFinded.ToString());
+                        Console.WriteLine();
+                    }
                     break;
                 }
                 catch (Exception ex)
@@ -199,7 +204,7 @@ namespace adonet_db_videogame
                     List<VideoGame> listVideoGames = VideoGameManager.GetVideoGamesByName(inputNameToSerach);
 
                     Console.WriteLine();
-                    Console.WriteLine("Risultati della ricerca: ");
+                    Console.WriteLine($"Sono stati trovati {listVideoGames.Count()} VideoGames: ");
                     Console.WriteLine();
 
                     if(listVideoGames.Count > 0)
