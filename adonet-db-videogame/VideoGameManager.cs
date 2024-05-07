@@ -78,9 +78,11 @@ VALUES (@name, @overview, @release_date, @created_at, @updated_at, @sh_id)";
                 DateTime updatedAt = reader.GetDateTime(indiceUpdatedAt);
                 long softwareHouseID = reader.GetInt64(indiceSoftwareHouseID);
 
-                videoGame = new VideoGame(name, overview, releaseDate, createdAt, softwareHouseID);
-                videoGame.Id = idVideogame;
-                videoGame.UpdatedAt = updatedAt;
+                videoGame = new VideoGame(idVideogame, name, overview, releaseDate, createdAt, updatedAt, softwareHouseID);
+
+                Console.WriteLine();
+                Console.WriteLine(videoGame.ToString());
+                Console.WriteLine();
             }
             catch (Exception ex) 
             {
