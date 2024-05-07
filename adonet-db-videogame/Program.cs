@@ -1,4 +1,6 @@
-﻿namespace adonet_db_videogame
+﻿using System.Data.SqlClient;
+
+namespace adonet_db_videogame
 {
     internal class Program
     {
@@ -59,7 +61,97 @@
 
         static void CreateNewGame()
         {
+            string name, overview;
+            DateTime releaseDate;
+            long softwareHouseID;
 
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine();
+                    Console.Write("Inserisci il nome del gioco: ");
+                    string inputName = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(inputName))
+                        throw new Exception("Il nome non puo essere vuoto. Riprova");
+
+                    name = inputName;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Errore: {ex.Message}");
+                }
+            }
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine();
+                    Console.Write("Inserisci il overview del gioco: ");
+                    string inputOverview = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(inputOverview))
+                        throw new Exception("Overview non puo essere vuoto. Riprova");
+
+                    overview = inputOverview;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Errore: {ex.Message}");
+                }
+            }
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine();
+                    Console.Write("Inserisci la data di rilascio del gioco (formato: yyyy-MM-dd): ");
+                    string inputReleaseDate = Console.ReadLine();
+
+                    if (!DateTime.TryParse(inputReleaseDate, out releaseDate))
+                        throw new Exception("Formato data non valido. Riprova.");
+
+                    releaseDate = releaseDate;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Errore: {ex.Message}");
+                }
+            }
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine();
+                    Console.Write("Inserisci id do softwareHouseID: ");
+                    string inputSoftwareHouseID = Console.ReadLine();
+
+                    if (!long.TryParse(inputSoftwareHouseID, out long id))
+                        throw new Exception("Formato Id non valido. Riprova.");
+
+                    softwareHouseID = id;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Errore: {ex.Message}");
+                }
+            }
+
+            VideoGame newVideoGame = new VideoGame(name, overview, releaseDate, DateTime.Now, softwareHouseID);
+
+            VideoGameManager.AddNewGame(newVideoGame);
         }
 
         static void SearchGameById ()
